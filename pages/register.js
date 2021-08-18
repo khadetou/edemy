@@ -1,19 +1,31 @@
 import { useState } from "react";
-export default function Register() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+import axios from "axios";
 
-  const handleSubmit = (e) => {
+export default function Register() {
+  const [name, setName] = useState("khadetou");
+  const [email, setEmail] = useState("khadetou@gmail.com");
+  const [password, setPassword] = useState("123456");
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const data = {
+    const da = {
       name,
       email,
       password,
     };
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const { data } = await axios.post(
+      "http://localhost:8000/api/register",
+      da,
+      config
+    );
 
-    console.log(data);
+    console.log("Response register", data);
   };
   return (
     <>
