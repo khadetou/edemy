@@ -1,0 +1,10 @@
+.font {
+  color: white;
+}
+.bg {
+  background-image: linear-gradient(to right, #007bff, #000);
+}
+
+.btn-lg {
+  width: 100%;
+}
