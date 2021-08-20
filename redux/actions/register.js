@@ -23,7 +23,6 @@ export const register = (body) => async (dispatch) => {
     });
     dispatch(loadUser());
   } catch (error) {
-    console.log({ error });
     dispatch({
       type: REGISTER_ERROR,
       payload: error.response.data.errors[0],

@@ -9,9 +9,7 @@ export default function Layout({ children }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (localStorage.token) {
-      setToken(localStorage.token);
-    }
+    setToken(localStorage.token);
     dispatch(loadUser());
   });
   return (

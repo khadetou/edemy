@@ -3,6 +3,8 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "@/redux/actions/register";
 import { CLEAR_ERROR } from "@/redux/types/type";
+import { useRouter } from "next/router";
+import { SyncOutlined } from "@ant-design/icons";
 
 export default function Register() {
   const [name, setName] = useState("khadetou");
@@ -10,9 +12,10 @@ export default function Register() {
   const [password, setPassword] = useState("123456");
 
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const { error, loading, isAuthenticated } = useSelector(
-    (state) => state.register
+    (state) => state.auth
   );
 
   const handleSubmit = async (e) => {
@@ -30,6 +33,9 @@ export default function Register() {
     if (error) {
       toast.error(error.msg);
       dispatch({ type: CLEAR_ERROR });
+    }
+    if (isAuthenticated) {
+      router.push("/");
     }
   });
 
@@ -66,8 +72,9 @@ export default function Register() {
           <button
             type="submit"
             className="btn  btn-lg btn-block btn-primary p-2"
+            disabled={!name || !email || !password || loading}
           >
-            Submit
+            {loading ? <SyncOutlined spin /> : "Submit"}
           </button>
         </form>
       </div>

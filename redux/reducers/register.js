@@ -5,12 +5,14 @@ import {
   LOAD_USER,
   LOAD_USER_ERROR,
   CLEAR_ERROR,
+  LOG_OUT,
 } from "../types/type";
 
 const initialState = {
   token: null,
   isAuthenticated: null,
   loading: true,
+  user: null,
   error: null,
 };
 
@@ -21,8 +23,7 @@ export const register = (state = initialState, action) => {
       localStorage.setItem("token", payload.token);
       return {
         ...state,
-        token: localStorage.getItem("token"),
-        user: payload,
+        ...payload,
         isAuthenticated: true,
         loading: false,
       };
@@ -31,10 +32,12 @@ export const register = (state = initialState, action) => {
       return {
         ...state,
         token: localStorage.getItem("token"),
+        user: payload,
         isAuthenticated: true,
         loading: false,
       };
 
+    case LOG_OUT:
     case LOAD_USER_ERROR:
     case REGISTER_ERROR:
       localStorage.removeItem("token");
@@ -43,6 +46,7 @@ export const register = (state = initialState, action) => {
         isAuthenticated: false,
         error: payload,
         loading: false,
+        user: null,
       };
 
     case SET_LOADING:
