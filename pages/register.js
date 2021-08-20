@@ -1,32 +1,38 @@
-import { useState } from "react";
-import axios from "axios";
+import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { register } from "@/redux/actions/register";
+import { CLEAR_ERROR } from "@/redux/types/type";
 
 export default function Register() {
   const [name, setName] = useState("khadetou");
   const [email, setEmail] = useState("khadetou@gmail.com");
   const [password, setPassword] = useState("123456");
 
+  const dispatch = useDispatch();
+
+  const { error, loading, isAuthenticated } = useSelector(
+    (state) => state.register
+  );
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const da = {
+    const body = {
       name,
       email,
       password,
     };
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    const { data } = await axios.post(
-      "http://localhost:8000/api/register",
-      da,
-      config
-    );
-
-    console.log("Response register", data);
+    dispatch(register(body));
   };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.msg);
+      dispatch({ type: CLEAR_ERROR });
+    }
+  });
+
   return (
     <>
       <h1 className="p-5 mb-4 text-center bg-primary text-white bg font">

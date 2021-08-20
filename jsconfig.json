@@ -3,9 +3,10 @@
     "baseUrl": ".",
     "paths": {
       "@/components/*": ["components/*"],
-      "@/config/*": ["config/*"],
-      "@/context/*": ["context/*"],
-      "@/helpers/*": ["helpers/*"]
+      "@/redux/*": ["redux/*"],
+      "@/actions/*": ["actions/*"],
+      "@/reducers/*": ["reducers/*"],
+      "@/utils/*": ["utils/*"]
     }
   }
 }
