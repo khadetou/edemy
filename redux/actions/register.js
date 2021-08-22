@@ -2,7 +2,6 @@ import axios from "axios";
 import { REGISTER_SUCCESS, REGISTER_ERROR } from "../types/type";
 import { loadUser } from "./user";
 import { loading } from "./loading";
-import { API_URL } from "config";
 
 //REGISTER
 export const register = (body) => async (dispatch) => {
