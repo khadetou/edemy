@@ -15,38 +15,38 @@ const initialState = {
 export const user = (state = initialState, action) => {
   const { payload, type } = action;
   switch (type) {
-    // case LOAD_USER:
-    //   return {
-    //     ...state,
-    //     user: payload,
-    //     loading: false,
-    //   };
+    case LOAD_USER:
+      return {
+        ...state,
+        user: payload,
+        loading: false,
+      };
 
-    // case LOAD_USER_ERROR:
-    //   return {
-    //     ...state,
-    //     error: payload,
-    //     loading: false,
-    //   };
+    case LOAD_USER_ERROR:
+      return {
+        ...state,
+        error: payload,
+        loading: false,
+      };
 
-    // case SET_LOADING:
-    //   return {
-    //     ...state,
-    //     loading: true,
-    //   };
+    case SET_LOADING:
+      return {
+        ...state,
+        loading: true,
+      };
 
-    // case LOG_OUT:
-    //   return {
-    //     ...state,
-    //     user: null,
-    //     loading: false,
-    //   };
+    case LOG_OUT:
+      return {
+        ...state,
+        user: null,
+        loading: false,
+      };
 
-    // case CLEAR_ERROR:
-    //   return {
-    //     ...state,
-    //     error: null,
-    //   };
+    case CLEAR_ERROR:
+      return {
+        ...state,
+        error: null,
+      };
     default:
       return {
         ...state,

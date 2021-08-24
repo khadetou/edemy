@@ -8,6 +8,11 @@ import {
   LOG_OUT,
   LOGIN_SUCCESS,
   LOGIN_ERROR,
+  FORGOT_PASS_ERROR,
+  RESET_PASS_ERROR,
+  FORGOT_PASS_SUCCESS,
+  RESET_PASS_SUCCESS,
+  CLEAR_SUCCESS,
 } from "../types/type";
 
 const initialState = {
@@ -40,6 +45,17 @@ export const auth = (state = initialState, action) => {
         loading: false,
       };
 
+    case FORGOT_PASS_SUCCESS:
+    case RESET_PASS_SUCCESS:
+      return {
+        ...state,
+        success: payload.success,
+        message: payload.message,
+        loading: false,
+      };
+
+    case FORGOT_PASS_ERROR:
+    case RESET_PASS_ERROR:
     case LOGIN_ERROR:
     case LOG_OUT:
     case LOAD_USER_ERROR:
@@ -57,6 +73,12 @@ export const auth = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
+      };
+
+    case CLEAR_SUCCESS:
+      return {
+        ...state,
+        message: null,
       };
 
     case CLEAR_ERROR:

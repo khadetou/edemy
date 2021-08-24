@@ -9,8 +9,8 @@ import {
   LogoutOutlined,
 } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
+
 import { logout } from "@/redux/actions/login";
-import { register } from "@/redux/actions/register";
 
 export default function TopNav() {
   const dispatch = useDispatch();
