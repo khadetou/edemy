@@ -7,6 +7,9 @@ import {
   UserAddOutlined,
   UserOutlined,
   LogoutOutlined,
+  CoffeeOutlined,
+  CarryOutOutlined,
+  TeamOutlined,
 } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -14,12 +17,12 @@ import { logout } from "@/redux/actions/login";
 
 export default function TopNav() {
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   const logoutHandler = () => {
     dispatch(logout());
   };
-  const { Item } = Menu;
+  const { Item, SubMenu } = Menu;
   return (
     <Menu mode="horizontal">
       <Item icon={<AppstoreOutlined />} key="app">
@@ -27,18 +30,38 @@ export default function TopNav() {
           <a>App</a>
         </Link>
       </Item>
-      {isAuthenticated && isAuthenticated ? (
+      {user && user.role.includes("Instructor") ? (
+        <Item icon={<CarryOutOutlined />} key="create/course">
+          <Link href="/instructor/course/create">
+            <a>Create Course</a>
+          </Link>
+        </Item>
+      ) : (
+        <Item icon={<TeamOutlined />} key="introctor">
+          <Link href="/instructor">
+            <a>Become Instructor</a>
+          </Link>
+        </Item>
+      )}
+      {isAuthenticated && user ? (
         <>
-          <Item icon={<UserOutlined />} key="profile">
-            <Link href="/login">
-              <a>Profile</a>
-            </Link>
-          </Item>
-          <Item icon={<LogoutOutlined />} key="logout">
-            <Link href="/">
-              <a onClick={logoutHandler}>LogOut</a>
-            </Link>
-          </Item>
+          <SubMenu
+            icon={<CoffeeOutlined />}
+            className="ms-auto"
+            title={user.name}
+            key={user.name}
+          >
+            <Item icon={<UserOutlined />} key="profile">
+              <Link href="/login">
+                <a>Profile</a>
+              </Link>
+            </Item>
+            <Item icon={<LogoutOutlined />} key="logout">
+              <Link href="/">
+                <a onClick={logoutHandler}>LogOut</a>
+              </Link>
+            </Item>
+          </SubMenu>
         </>
       ) : (
         <>

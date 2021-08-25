@@ -13,7 +13,9 @@ export default function Login() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const { error, loading, success } = useSelector((state) => state.auth);
+  const { error, loading, success, isAuthenticated } = useSelector(
+    (state) => state.auth
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,15 +31,18 @@ export default function Login() {
   };
 
   useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/users");
+    }
+
     if (success) {
       router.push("/login");
     }
     if (error) {
       toast.error(error);
-
       dispatch({ type: CLEAR_ERROR });
     }
-  }, [success, error, dispatch]);
+  }, [success, error, dispatch, isAuthenticated]);
 
   return (
     <>

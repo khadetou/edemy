@@ -11,7 +11,7 @@ export default function Forgot() {
 
   const dispatch = useDispatch();
 
-  const { error, loading, success, message } = useSelector(
+  const { error, loading, success, message, isAuthenticated } = useSelector(
     (state) => state.auth
   );
 
@@ -26,6 +26,10 @@ export default function Forgot() {
   };
 
   useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/users");
+    }
+
     if (error) {
       toast.error(error);
       dispatch({ type: CLEAR_ERROR });
@@ -38,7 +42,7 @@ export default function Forgot() {
         router.push("/");
       }, 3000);
     }
-  }, [dispatch, success, error, message]);
+  }, [dispatch, success, error, message, isAuthenticated]);
 
   return (
     <>
