@@ -7,13 +7,37 @@ import {
 } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
+import { createInstructor } from "@/redux/actions/payment";
+import { useRouter } from "next/router";
+import { CLEAR_ERROR } from "@/redux/types/type";
 
 export default function Instructor() {
   const { user, loading } = useSelector((state) => state.user);
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const {
+    link,
+    loading: insLoading,
+    error,
+  } = useSelector((state) => state.payment);
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const becomeInstructor = () => {
-    console.log("Become instructor");
+    dispatch(createInstructor());
   };
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push("/register");
+    }
+    if (error) {
+      toast.error(error);
+      dispatch({ type: CLEAR_ERROR });
+    }
+    if (link) {
+      router.push(link);
+    }
+  }, [link, error, dispatch]);
+  console.log(link);
   return (
     <>
       <h1 className="p-5 mb-4 text-center bg-primary text-white bg font">
@@ -43,7 +67,7 @@ export default function Instructor() {
                 }
                 onClick={becomeInstructor}
               >
-                {loading ? "Processing..." : "Payout Setup"}
+                {insLoading ? "Processing..." : "Payout Setup"}
               </Button>
 
               <p>
