@@ -4,12 +4,15 @@ import {
   PAYEMENT_FAIL,
   CLEAR_ERROR,
   LOG_OUT,
+  STRIPESTATUS_SUCCESS,
+  STRIPESTATUS_FAIL,
 } from "../types/type";
 
 const initialState = {
   link: null,
   loading: true,
   error: null,
+  success: null,
 };
 
 export const payment = (state = initialState, action) => {
@@ -22,7 +25,14 @@ export const payment = (state = initialState, action) => {
         loading: false,
       };
 
+    case STRIPESTATUS_SUCCESS:
+      return {
+        ...state,
+        success: payload,
+        loading: false,
+      };
     case PAYEMENT_FAIL:
+    case STRIPESTATUS_FAIL:
       return {
         ...state,
         error: payload,
