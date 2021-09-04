@@ -4,12 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { forgotPassword } from "@/redux/actions/login";
 import { CLEAR_ERROR, CLEAR_SUCCESS } from "@/redux/types/type";
 import { SyncOutlined } from "@ant-design/icons";
-import router from "next/router";
+import { useRouter } from "next/router";
 
 export default function Forgot() {
   const [email, setEmail] = useState("khadetou@gmail.com");
 
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const { error, loading, success, message, isAuthenticated } = useSelector(
     (state) => state.auth
