@@ -32,8 +32,8 @@ export default function TopNav() {
       </Item>
       {user && user.role.includes("Instructor") ? (
         <Item icon={<CarryOutOutlined />} key="create/course">
-          <Link href="/instructor/course/create">
-            <a>Create Course</a>
+          <Link href="/courses/instructor">
+            <a>Instructor</a>
           </Link>
         </Item>
       ) : (
@@ -52,7 +52,7 @@ export default function TopNav() {
             key={user.name}
           >
             <Item icon={<UserOutlined />} key="profile">
-              <Link href="/login">
+              <Link href="/users">
                 <a>Profile</a>
               </Link>
             </Item>

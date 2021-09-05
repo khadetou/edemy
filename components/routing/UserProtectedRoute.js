@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useSelector, dispatch } from "react-redux";
-import { loadUser } from "@/redux/actions/user";
 import { SyncOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
 
@@ -10,10 +9,10 @@ export default function UserProtectedRoute({ children }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!localStorage.token) {
       router.push("/login");
     }
-  }, [isAuthenticated]);
+  });
   return (
     <>
       {!isAuthenticated || loading ? (

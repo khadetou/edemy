@@ -3,6 +3,7 @@ import {
   CLEAR_ERROR,
   GET_INSTRUCTOR_SUCCESS,
   GET_INSTRUCTOR_FAIL,
+  LOG_OUT,
 } from "../types/type";
 
 const initialState = {
@@ -33,6 +34,12 @@ export const currentInstructor = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
+      };
+
+    case LOG_OUT:
+      return {
+        ...state,
+        instructor: null,
       };
 
     case CLEAR_ERROR:

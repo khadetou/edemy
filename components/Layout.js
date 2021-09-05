@@ -3,7 +3,6 @@ import Meta from "./Meta";
 import setToken from "@/utils/setToken";
 import { useEffect } from "react";
 import { loadUser } from "@/redux/actions/user";
-import { getCurrentInstructor } from "@/redux/actions/instructor";
 import { useDispatch } from "react-redux";
 
 export default function Layout({ children }) {
@@ -12,7 +11,6 @@ export default function Layout({ children }) {
   useEffect(() => {
     setToken(localStorage.token);
     dispatch(loadUser());
-    dispatch(getCurrentInstructor());
   });
   return (
     <>

@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
+
 import { Button } from "antd";
+import TopNav from "@/components/TopNav";
 import {
   SettingOutlined,
   UserSwitchOutlined,
   LoadingOutlined,
+  CarryOutOutlined,
 } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,6 +43,15 @@ export default function Instructor() {
   console.log(link);
   return (
     <>
+      <TopNav
+        Navigation={
+          <Item icon={<CarryOutOutlined />} key="create/course">
+            <Link href="/courses/instructor">
+              <a>Instructor</a>
+            </Link>
+          </Item>
+        }
+      />
       <h1 className="p-5 mb-4 text-center bg-primary text-white bg font">
         Register As Instructor
       </h1>

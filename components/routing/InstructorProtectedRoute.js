@@ -6,20 +6,22 @@ import { SyncOutlined } from "@ant-design/icons";
 
 export default function InstructorProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useSelector((state) => state.auth);
-  const { instructor, success } = useSelector(
-    (state) => state.currentInstructor
-  );
+  const { instructor } = useSelector((state) => state.currentInstructor);
   const router = useRouter();
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (!localStorage.token) {
+      router.push("/login");
+    }
     if (!instructor) {
       dispatch(getCurrentInstructor());
     }
-    if (instructor && !success) {
+    if (isAuthenticated && !instructor) {
       router.push("/");
     }
-  }, [instructor, dispatch, success]);
+  }, [isAuthenticated, instructor]);
+
   return (
     <>
       {!isAuthenticated || loading ? (

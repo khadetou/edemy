@@ -30,8 +30,8 @@ export default function Login() {
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
-      router.push("/users");
+    if (localStorage.token) {
+      router.push("/");
     }
     if (error) {
       toast.error(error);
