@@ -30,6 +30,7 @@ export const currentInstructor = (state = initialState, action) => {
         error: payload,
         success: false,
       };
+
     case SET_LOADING:
       return {
         ...state,

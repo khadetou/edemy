@@ -6,7 +6,7 @@ export default function InstructorNav() {
         <a className="nav-link active">Create Course</a>
       </Link>
       <Link href="/">
-        <a className="nav-link text-bold ">Student</a>
+        <a className="nav-link">Student</a>
       </Link>
     </div>
   );

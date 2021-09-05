@@ -9,7 +9,7 @@ import {
   RESET_PASS_ERROR,
 } from "../types/type";
 import { loadUser } from "./user";
-import { loading } from "./loading";
+import { loadingRegister } from "./loading";
 
 //LOGIN
 export const login = (body) => async (dispatch) => {
@@ -19,7 +19,7 @@ export const login = (body) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     };
-    dispatch(loading());
+    dispatch(loadingRegister());
     const { data } = await axios.post(`/api/login`, body, config);
     dispatch({
       type: LOGIN_SUCCESS,
@@ -50,7 +50,7 @@ export const forgotPassword = (body) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     };
-    dispatch(loading());
+    dispatch(loadingRegister());
     const { data } = await axios.post(`/api/password/forgot`, body, config);
     dispatch({
       type: FORGOT_PASS_SUCCESS,
@@ -73,7 +73,7 @@ export const resetPassword = (body, token) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     };
-    dispatch(loading());
+    dispatch(loadingRegister());
     const { data } = await axios.put(
       `/api/password/reset/${token}`,
       body,

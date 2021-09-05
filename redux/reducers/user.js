@@ -1,9 +1,9 @@
 import {
-  SET_LOADING,
   LOAD_USER,
   LOAD_USER_ERROR,
   CLEAR_ERROR,
   LOG_OUT,
+  SET_LOADING_USER,
 } from "../types/type";
 
 const initialState = {
@@ -29,7 +29,7 @@ export const user = (state = initialState, action) => {
         loading: false,
       };
 
-    case SET_LOADING:
+    case SET_LOADING_USER:
       return {
         ...state,
         loading: true,

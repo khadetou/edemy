@@ -1,10 +1,10 @@
 import axios from "axios";
-import { loading } from "./loading";
+import { loadingInstructor } from "./loading";
 import { GET_INSTRUCTOR_FAIL, GET_INSTRUCTOR_SUCCESS } from "../types/type";
 
 export const getCurrentInstructor = (id) => async (dispatch) => {
   try {
-    dispatch(loading());
+    dispatch(loadingInstructor());
     const { data } = await axios.get("/api/current-instructor");
     dispatch({
       type: GET_INSTRUCTOR_SUCCESS,

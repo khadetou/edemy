@@ -6,6 +6,7 @@ import {
   LOG_OUT,
   STRIPESTATUS_SUCCESS,
   STRIPESTATUS_FAIL,
+  SET_LOADING_PAYMENT,
 } from "../types/type";
 
 const initialState = {
@@ -39,7 +40,7 @@ export const payment = (state = initialState, action) => {
         loading: false,
       };
 
-    case SET_LOADING:
+    case SET_LOADING_PAYMENT:
       return {
         ...state,
         loading: true,

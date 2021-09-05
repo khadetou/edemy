@@ -1,7 +1,7 @@
 import axios from "axios";
 import { REGISTER_SUCCESS, REGISTER_ERROR } from "../types/type";
 import { loadUser } from "./user";
-import { loading } from "./loading";
+import { loadingRegister } from "./loading";
 
 //REGISTER
 export const register = (body) => async (dispatch) => {
@@ -11,7 +11,7 @@ export const register = (body) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     };
-    dispatch(loading());
+    dispatch(loadingRegister());
     const { data } = await axios.post(`/api/register`, body, config);
     dispatch({
       type: REGISTER_SUCCESS,

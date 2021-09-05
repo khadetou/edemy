@@ -1,15 +1,14 @@
 import axios from "axios";
 import setToken from "@/utils/setToken";
 import { LOAD_USER, LOAD_USER_ERROR } from "../types/type";
-import { loading } from "./loading";
-import { API_URL } from "config";
+import { loadingUser } from "./loading";
 
 export const loadUser = () => async (dispatch) => {
   try {
     if (localStorage.token) {
       setToken(localStorage.token);
     }
-    dispatch(loading());
+    dispatch(loadingUser());
     const { data } = await axios.get(`/api/user/profile`);
     dispatch({
       type: LOAD_USER,

@@ -1,7 +1,28 @@
-import { SET_LOADING } from "../types/type";
+import {
+  SET_LOADING_INSTRUCTOR,
+  SET_LOADING_PAYMENT,
+  SET_LOADING_REGISTER,
+  SET_LOADING_USER,
+} from "../types/type";
 
-export const loading = () => (dispatch) => {
+export const loadingUser = () => (dispatch) => {
   dispatch({
-    type: SET_LOADING,
+    type: SET_LOADING_USER,
+  });
+};
+
+export const loadingRegister = () => (dispatch) => {
+  dispatch({
+    type: SET_LOADING_REGISTER,
+  });
+};
+export const loadingPayment = () => (dispatch) => {
+  dispatch({
+    type: SET_LOADING_PAYMENT,
+  });
+};
+export const loadingInstructor = () => (dispatch) => {
+  dispatch({
+    type: SET_LOADING_INSTRUCTOR,
   });
 };

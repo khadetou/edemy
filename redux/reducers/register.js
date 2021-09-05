@@ -13,10 +13,10 @@ import {
   FORGOT_PASS_SUCCESS,
   RESET_PASS_SUCCESS,
   CLEAR_SUCCESS,
+  SET_LOADING_REGISTER,
 } from "../types/type";
 
 const initialState = {
-  token: null,
   isAuthenticated: null,
   loading: true,
   user: null,
@@ -39,7 +39,6 @@ export const auth = (state = initialState, action) => {
     case LOAD_USER:
       return {
         ...state,
-        token: localStorage.getItem("token"),
         user: payload,
         isAuthenticated: true,
         loading: false,
@@ -69,7 +68,7 @@ export const auth = (state = initialState, action) => {
         user: null,
       };
 
-    case SET_LOADING:
+    case SET_LOADING_REGISTER:
       return {
         ...state,
         loading: true,

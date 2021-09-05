@@ -5,11 +5,11 @@ import {
   STRIPESTATUS_SUCCESS,
   STRIPESTATUS_FAIL,
 } from "../types/type";
-import { loading } from "./loading";
+import { loadingPayment } from "./loading";
 
 export const createInstructor = () => async (dispatch) => {
   try {
-    dispatch(loading());
+    dispatch(loadingPayment());
     const { data } = await axios.post("/api/instructor");
 
     dispatch({
@@ -26,7 +26,7 @@ export const createInstructor = () => async (dispatch) => {
 
 export const stripeStatus = () => async (dispatch) => {
   try {
-    dispatch(loading());
+    dispatch(loadingPayment());
     const { data } = await axios.post("/api/get-status");
 
     dispatch({

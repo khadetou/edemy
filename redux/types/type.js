@@ -1,4 +1,3 @@
-export const SET_LOADING = "SET_LOADING";
 export const LOAD_USER = "LOAD_USER";
 export const LOAD_USER_ERROR = "LOAD_USER_ERROR";
 
@@ -23,3 +22,9 @@ export const CLEAR_SUCCESS = "CLEAR_SUCCESS";
 export const CLEAR_ERROR = "CLEAR_ERROR";
 
 export const LOG_OUT = "LOG_OUT";
+
+//Loadings
+export const SET_LOADING_USER = "SET_LOADING_USER";
+export const SET_LOADING_INSTRUCTOR = "SET_LOADING_INSTRUCTOR";
+export const SET_LOADING_PAYMENT = "SET_LOADING_PAYMENT";
+export const SET_LOADING_REGISTER = "SET_LOADING_REGISTER";
