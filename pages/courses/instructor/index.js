@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import InstructorProtectedRoute from "@/components/routing/InstructorProtectedRoute";
+import InstructorProtectedRoute from "@/components/routes/InstructorProtectedRoute";
 import InstructorNav from "@/components/nav/InstructorNav";
 
 export default function User() {
@@ -7,9 +7,6 @@ export default function User() {
     <InstructorProtectedRoute>
       <div className="container-fluid">
         <div className="row">
-          <div className="col-md-2">
-            <InstructorNav />
-          </div>
           <div className="col-md-10">
             <h1 className=" font p-5 mb-4 text-center bg-primary text-white bg">
               Instructor Dashboard

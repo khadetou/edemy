@@ -1,4 +1,4 @@
-import UserProtectedRoute from "@/components/routing/UserProtectedRoute";
+import UserProtectedRoute from "@/components/routes/UserProtectedRoute";
 import UserNav from "@/components/nav/UserNav";
 
 export default function User() {
