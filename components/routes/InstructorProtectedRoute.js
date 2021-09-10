@@ -4,24 +4,27 @@ import { getCurrentInstructor } from "@/redux/actions/instructor";
 import { useRouter } from "next/router";
 import { SyncOutlined } from "@ant-design/icons";
 import InstructorNav from "../nav/InstructorNav";
+import { loadUser } from "@/redux/actions/user";
 
 export default function InstructorProtectedRoute({ children }) {
-  const { isAuthenticated, loading } = useSelector((state) => state.auth);
-  const { instructor } = useSelector((state) => state.currentInstructor);
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { instructor, loading, success } = useSelector(
+    (state) => state.currentInstructor
+  );
   const router = useRouter();
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(getCurrentInstructor());
+    }
+    if (!loading && !instructor) {
+      router.push("/");
+    }
     if (!localStorage.token) {
       router.push("/login");
     }
-    if (!instructor) {
-      dispatch(getCurrentInstructor());
-    }
-    if (isAuthenticated && !instructor) {
-      router.push("/");
-    }
-  }, [isAuthenticated, instructor]);
+  }, [isAuthenticated, dispatch]);
 
   return (
     <>

@@ -3,6 +3,7 @@ import {
   SET_LOADING_PAYMENT,
   SET_LOADING_REGISTER,
   SET_LOADING_USER,
+  SET_LOADING_CREATECOURSE,
 } from "../types/type";
 
 export const loadingUser = () => (dispatch) => {
@@ -24,5 +25,10 @@ export const loadingPayment = () => (dispatch) => {
 export const loadingInstructor = () => (dispatch) => {
   dispatch({
     type: SET_LOADING_INSTRUCTOR,
+  });
+};
+export const loadingCreateCourse = () => (dispatch) => {
+  dispatch({
+    type: SET_LOADING_CREATECOURSE,
   });
 };

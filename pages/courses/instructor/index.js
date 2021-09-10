@@ -1,8 +1,23 @@
 import { useEffect } from "react";
 import InstructorProtectedRoute from "@/components/routes/InstructorProtectedRoute";
-import InstructorNav from "@/components/nav/InstructorNav";
+import { useSelector, useDispatch } from "react-redux";
+import { getAllCourses } from "@/redux/actions/course";
+import { toast } from "react-toastify";
+import { CLEAR_ERROR } from "@/redux/types/type";
 
 export default function User() {
+  const dispatch = useDispatch();
+  const { error, courses, loading } = useSelector((state) => state.course);
+
+  useEffect(() => {
+    if (!courses) {
+      dispatch(getAllCourses());
+    }
+    if (error) {
+      toast.error(error);
+      dispatch({ type: CLEAR_ERROR });
+    }
+  }, [courses, dispatch, error]);
   return (
     <InstructorProtectedRoute>
       <div className="container-fluid">

@@ -1,8 +1,17 @@
-import { Select, Button } from "antd";
+import { Select, Button, Avatar } from "antd";
 import { useState, useEffect } from "react";
 import InstructorProtectedRoute from "@/components/routes/InstructorProtectedRoute";
+import { useSelector, useDispatch } from "react-redux";
+import { createCourse } from "@/redux/actions/course";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import { CLEAR_ERROR } from "@/redux/types/type";
 
 export default function CourseCreate() {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const { error, courses } = useSelector((state) => state.course);
+
   const { Option } = Select;
   // state
   const [values, setValues] = useState({
@@ -12,21 +21,58 @@ export default function CourseCreate() {
     uploading: false,
     paid: true,
     category: "",
-    loading: false,
-    imagePreview: "",
   });
 
+  const [imagePreview, setImagePreview] = useState([]);
+  const [image, setImage] = useState([]);
+  const [uploadButtonText, setUploadButtonText] = useState("Upload Image");
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch({ type: CLEAR_ERROR });
+    }
+
+    if (courses) {
+      toast.success("The course has been created successfully! ");
+      setTimeout(() => {
+        router.push("/courses/instructor");
+      }, 5000);
+    }
+  });
+
+  //Handlers
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  const handleImage = () => {
-    //
+  const handleImage = (e) => {
+    let file = e.target.files[0];
+
+    setImage([]);
+    setImagePreview([]);
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setImage(reader.result);
+        setImagePreview(reader.result);
+      }
+    };
+    reader.readAsDataURL(file);
+    setUploadButtonText(file.name);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(values);
+    const courseData = {
+      ...values,
+      image,
+    };
+    if (image.length === 0) {
+      return toast.error("Please Upload image");
+    }
+    dispatch(createCourse(courseData));
+    console.log(courseData);
   };
 
   const children = [];
@@ -104,11 +150,11 @@ export default function CourseCreate() {
             />
           </div>
 
-          <div className="form-row">
+          <div className="row d-flex align-items-center ">
             <div className="col">
               <div className="form-group">
-                <label className="btn btn-outline-secondary btn-block text-left mt-3">
-                  {values.loading ? "Uploading" : "Image Upload"}
+                <label className="btn btn-outline-secondary w-100 text-left mt-3">
+                  {uploadButtonText}
                   <input
                     type="file"
                     name="image"
@@ -119,6 +165,11 @@ export default function CourseCreate() {
                 </label>
               </div>
             </div>
+            {imagePreview && (
+              <div className="col-md-6">
+                <Avatar width={200} src={imagePreview} />
+              </div>
+            )}
           </div>
 
           <div className="row">
@@ -127,7 +178,7 @@ export default function CourseCreate() {
                 onClick={handleSubmit}
                 disabled={values.loading || values.uploading}
                 className="btn btn-primary my-3"
-                loading={values.loading2}
+                loading={values.loading}
                 type="primary"
                 size="large"
                 shape="round"
