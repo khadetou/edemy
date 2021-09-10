@@ -2,30 +2,29 @@ import { Select, Button, Avatar } from "antd";
 import { useState, useEffect } from "react";
 import InstructorProtectedRoute from "@/components/routes/InstructorProtectedRoute";
 import { useSelector, useDispatch } from "react-redux";
-import { createCourse } from "@/redux/actions/course";
+import { getCourse, updateCourse } from "@/redux/actions/course";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { CLEAR_ERROR, CLEAR_SUCCESS } from "@/redux/types/type";
 
-export default function CourseCreate() {
+export default function UpdateCourse() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { error, success } = useSelector((state) => state.course);
+  const id = router.query.id;
 
+  const { error, course, success, loading } = useSelector(
+    (state) => state.course
+  );
+  console.log(success);
   const { Option } = Select;
   // state
   const [values, setValues] = useState({
     name: "",
     description: "",
-    price: "9.99",
-    uploading: false,
-    paid: true,
+    price: "",
+    paid: "",
     category: "",
   });
-
-  const [imagePreview, setImagePreview] = useState([]);
-  const [image, setImage] = useState([]);
-  const [uploadButtonText, setUploadButtonText] = useState("Upload Image");
 
   useEffect(() => {
     if (error) {
@@ -33,12 +32,30 @@ export default function CourseCreate() {
       dispatch({ type: CLEAR_ERROR });
     }
 
+    if ((!course && id) || (course && id !== course._id)) {
+      dispatch(getCourse(id));
+    } else {
+      setValues({
+        name: course.name,
+        description: course.description,
+        price: course.price,
+        paid: course.paid,
+        category: course.category,
+      });
+      setImagePreview(course.image[0].url);
+    }
     if (success) {
-      toast.success("The course has been created successfully! ");
+      toast.success("Data has been updated successfully!");
+      dispatch(getCourse(id));
       dispatch({ type: CLEAR_SUCCESS });
       router.push("/courses/instructor");
     }
-  }, [error, dispatch, success]);
+  }, [course, id, dispatch, error, success]);
+
+  const [imagePreview, setImagePreview] = useState([]);
+  const [image, setImage] = useState([]);
+
+  const [uploadButtonText, setUploadButtonText] = useState("Upload Image");
 
   //Handlers
   const handleChange = (e) => {
@@ -65,12 +82,12 @@ export default function CourseCreate() {
     e.preventDefault();
     const courseData = {
       ...values,
-      image,
     };
-    if (image.length === 0) {
-      return toast.error("Please Upload image");
+    if (image.length !== 0) {
+      courseData.image = image;
     }
-    dispatch(createCourse(courseData));
+
+    dispatch(updateCourse(course._id, courseData));
   };
 
   const children = [];
@@ -127,6 +144,7 @@ export default function CourseCreate() {
                 <Select
                   defaultValue="$9.99"
                   style={{ widht: "100%" }}
+                  value={values.price}
                   onChange={(v) => setValues({ ...values, price: v })}
                   tokenSeparators={[,]}
                   size="large"
@@ -174,14 +192,14 @@ export default function CourseCreate() {
             <div className="col">
               <Button
                 onClick={handleSubmit}
-                disabled={values.loading || values.uploading}
+                disabled={loading || values.uploading}
                 className="btn btn-primary my-3"
-                loading={values.loading}
+                loading={loading}
                 type="primary"
                 size="large"
                 shape="round"
               >
-                {values.loading ? "Saving..." : "Save & Continue"}
+                {loading ? "Updating..." : "Update & Continue"}
               </Button>
             </div>
           </div>

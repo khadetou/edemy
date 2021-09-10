@@ -11,7 +11,7 @@ export default function Layout({ children }) {
   useEffect(() => {
     setToken(localStorage.token);
     dispatch(loadUser());
-  });
+  }, []);
   return (
     <>
       <Meta />

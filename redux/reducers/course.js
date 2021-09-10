@@ -12,12 +12,15 @@ import {
   GET_COURSE_SUCCESS,
   UPDATE_COURSE_SUCCESS,
   UPDATE_COURSE_FAIL,
+  CLEAR_SUCCESS,
 } from "../types/type";
 
 const initialState = {
   loading: true,
   error: null,
   courses: null,
+  course: null,
+  success: false,
 };
 
 export const course = (state = initialState, action) => {
@@ -27,7 +30,7 @@ export const course = (state = initialState, action) => {
     case CREATECOURSE_SUCCESS:
       return {
         ...state,
-        courses: payload,
+        success: payload.success,
         loading: false,
       };
 
@@ -40,20 +43,20 @@ export const course = (state = initialState, action) => {
     case GET_COURSE_SUCCESS:
       return {
         ...state,
-        courses: payload,
+        course: payload,
         loading: false,
       };
 
     case UPDATE_COURSE_SUCCESS:
       return {
         ...state,
-        courses: payload,
-        loaoding: false,
+        success: payload.success,
+        loading: false,
       };
     case DELETECOURSE_SUCCESS:
       return {
         ...state,
-        courses: payload,
+        success: payload,
         loading: false,
       };
     case GET_COURSES_FAIL:
@@ -76,13 +79,23 @@ export const course = (state = initialState, action) => {
       return {
         ...state,
         courses: null,
+        course: null,
+        success: false,
       };
 
     case CLEAR_ERROR:
       return {
         ...state,
         error: null,
+        success: false,
       };
+
+    case CLEAR_SUCCESS: {
+      return {
+        ...state,
+        success: false,
+      };
+    }
     default:
       return {
         ...state,

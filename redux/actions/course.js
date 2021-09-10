@@ -12,7 +12,6 @@ import {
   UPDATE_COURSE_SUCCESS,
   UPDATE_COURSE_FAIL,
 } from "../types/type";
-import { API_URL } from "config";
 
 //Create course
 export const createCourse = (courseData) => async (dispatch) => {
@@ -77,7 +76,7 @@ export const getCourse = (id) => async (dispatch) => {
 };
 
 //UPDATE course
-export const updateCourse = (courseData) => async (dispatch) => {
+export const updateCourse = (id, courseData) => async (dispatch) => {
   try {
     const config = {
       headers: {
@@ -87,13 +86,12 @@ export const updateCourse = (courseData) => async (dispatch) => {
 
     dispatch(loadingCreateCourse());
 
-    const { data } = await axios.put("/api/course", courseData, config);
+    const { data } = await axios.put(`/api/course/${id}`, courseData, config);
     dispatch({
       type: UPDATE_COURSE_SUCCESS,
       payload: data,
     });
   } catch (error) {
-    console.log({ error });
     dispatch({
       type: UPDATE_COURSE_FAIL,
       payload: error.response.data.message,
@@ -105,14 +103,13 @@ export const updateCourse = (courseData) => async (dispatch) => {
 export const deleteCourse = (id) => async (dispatch) => {
   try {
     dispatch(loadingCreateCourse());
-    id = id.trim();
-    const { data } = await axios.post(`${API_URL}course/${id}`);
+
+    const { data } = await axios.delete(`/api/course/${id}`);
     dispatch({
       type: DELETECOURSE_SUCCESS,
       payload: data,
     });
   } catch (error) {
-    console.log({ error });
     dispatch({
       type: DELETECOURSE_FAIL,
       payload: error.response.data.message,
