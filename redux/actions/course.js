@@ -1,5 +1,5 @@
 import axios from "axios";
-import { loadingCreateCourse } from "./loading";
+import { loadingCreateCourse, loadingLesson } from "./loading";
 import {
   CREATECOURSE_SUCCESS,
   CREATECOURSE_FAIL,
@@ -11,6 +11,10 @@ import {
   GET_COURSE_SUCCESS,
   UPDATE_COURSE_SUCCESS,
   UPDATE_COURSE_FAIL,
+  CREATE_LESSON_SUCCESS,
+  CREATE_LESSON_FAIL,
+  UPLOAD_VIDEO_SUCCESS,
+  UPLOAD_VIDEO_FAIL,
 } from "../types/type";
 
 //Create course
@@ -112,6 +116,65 @@ export const deleteCourse = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: DELETECOURSE_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+//Upload video
+export const uploadVideo = (id, videoData) => async (dispatch) => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    dispatch(loadingLesson());
+
+    const { data } = await axios.post(
+      `/api/course/lesson/upload-video/${id}`,
+      videoData
+    );
+
+    dispatch({
+      type: UPLOAD_VIDEO_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    console.log({ error });
+    dispatch({
+      type: UPLOAD_VIDEO_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+//Create lesson
+export const createLesson = (id, lessonData) => async (dispatch) => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    dispatch(loadingLesson());
+
+    const { data } = await axios.post(
+      `/api/course/lesson/${id}`,
+      lessonData,
+      config
+    );
+
+    dispatch({
+      type: CREATE_LESSON_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    console.log({ error });
+    dispatch({
+      type: CREATE_LESSON_FAIL,
       payload: error.response.data.message,
     });
   }

@@ -4,6 +4,7 @@ import {
   SET_LOADING_REGISTER,
   SET_LOADING_USER,
   SET_LOADING_CREATECOURSE,
+  SET_LOADING_LESSON,
 } from "../types/type";
 
 export const loadingUser = () => (dispatch) => {
@@ -30,5 +31,15 @@ export const loadingInstructor = () => (dispatch) => {
 export const loadingCreateCourse = () => (dispatch) => {
   dispatch({
     type: SET_LOADING_CREATECOURSE,
+  });
+};
+export const loadingLesson = () => (dispatch) => {
+  dispatch({
+    type: SET_LOADING_LESSON,
+  });
+};
+export const loadingVideo = () => (dispatch) => {
+  dispatch({
+    type: SET_LOADING_VIDEO,
   });
 };

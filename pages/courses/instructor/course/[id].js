@@ -1,24 +1,51 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import InstructorProtectedRoute from "@/components/routes/InstructorProtectedRoute";
-import { Avatar, Tooltip } from "antd";
-import { EditOutlined, CheckOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Avatar, Tooltip, Button, Modal } from "antd";
+import {
+  EditOutlined,
+  CheckOutlined,
+  DeleteOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
 import ReactMarkdown from "react-markdown";
 import { useSelector, useDispatch } from "react-redux";
-import { getCourse, deleteCourse } from "@/redux/actions/course";
+import {
+  getCourse,
+  deleteCourse,
+  createLesson,
+  uploadVideo,
+} from "@/redux/actions/course";
 import { toast } from "react-toastify";
 import { CLEAR_ERROR, CLEAR_SUCCESS } from "@/redux/types/type";
 import Link from "next/link";
+import AddLessonForm from "@/components/forms/AddLessonForm";
 
 export default function CourseView() {
   const dispatch = useDispatch();
   const { course, loading, success, error } = useSelector(
     (state) => state.course
   );
+  const {
+    video: videoLinks,
+    error: videoLinkErr,
+    laoding: videoLinkLoading,
+  } = useSelector((state) => state.videos);
 
   const router = useRouter();
 
   const id = router.query.id;
+
+  // for lessons
+  const [visible, setVisible] = useState(false);
+  const [values, setValues] = useState({
+    title: "",
+    content: "",
+  });
+
+  const [video, setVideo] = useState({});
+  const [uploading, setUploading] = useState(false);
+  const [uploadButtonText, setUploadButtonText] = useState("Upload Video");
 
   useEffect(() => {
     if ((id && course && id !== course._id) || (!course && id)) {
@@ -29,13 +56,43 @@ export default function CourseView() {
       toast.error(error);
       dispatch({ type: CLEAR_ERROR });
     }
+    if (videoLinkErr) {
+      toast.error(videoLinkErr);
+      dispatch({ type: CLEAR_ERROR });
+    }
     if (success) {
-      console.log(success);
       toast.success(success.message);
       dispatch({ type: CLEAR_SUCCESS });
       router.push("/courses/instructor");
     }
   }, [error, dispatch, course, id, success]);
+
+  // FUNCTIONS FOR ADD LESSON
+  const handleAddLesson = (e) => {
+    e.preventDefault();
+    if (!video) {
+      return toast.error("It's loading");
+    }
+    setVideo(videoLinks);
+
+    const lessonData = {
+      ...values,
+      video,
+    };
+    console.log(course._id);
+    dispatch(createLesson(course._id, lessonData));
+  };
+
+  const handleVideo = (e) => {
+    const file = e.target.files[0];
+
+    let videoData = new FormData();
+    videoData.append("video", file);
+
+    console.log(videoData);
+    dispatch(uploadVideo(course.instructor, videoData));
+    setUploadButtonText(file.name);
+  };
 
   const deleteC = (id) => {
     if (window.confirm("Are you sure you wanna delete the course ?")) {
@@ -91,9 +148,41 @@ export default function CourseView() {
             <hr />
             <div className="row">
               <div className="col">
-                <ReactMarkdown source={course.description} />
+                <ReactMarkdown children={course.description} />
               </div>
             </div>
+
+            <div className="row">
+              <Button
+                onClick={() => setVisible(true)}
+                className="col-md-6 offset-md-3 text-center mt-5"
+                type="primary"
+                shape="round"
+                icon={<UploadOutlined />}
+                size="large"
+              >
+                Add Lesson
+              </Button>
+            </div>
+
+            <br />
+
+            <Modal
+              title="+ Add Lesson"
+              centered
+              visible={visible}
+              onCancel={() => setVisible(false)}
+              footer={null}
+            >
+              <AddLessonForm
+                values={values}
+                setValues={setValues}
+                handleAddLesson={handleAddLesson}
+                uploading={uploading}
+                uploadButtonText={uploadButtonText}
+                handleVideo={handleVideo}
+              />
+            </Modal>
           </div>
         )}
       </div>

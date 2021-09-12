@@ -67,9 +67,15 @@ export default function CourseCreate() {
       ...values,
       image,
     };
+
     if (image.length === 0) {
       return toast.error("Please Upload image");
     }
+
+    if (!courseData.paid) {
+      courseData.price = "0";
+    }
+    console.log(courseData);
     dispatch(createCourse(courseData));
   };
 

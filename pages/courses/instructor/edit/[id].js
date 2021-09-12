@@ -15,7 +15,7 @@ export default function UpdateCourse() {
   const { error, course, success, loading } = useSelector(
     (state) => state.course
   );
-  console.log(success);
+
   const { Option } = Select;
   // state
   const [values, setValues] = useState({

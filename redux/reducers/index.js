@@ -3,7 +3,7 @@ import { auth } from "./register";
 import { user } from "./user";
 import { payment } from "./payment";
 import { currentInstructor } from "./instructor";
-import { course } from "./course";
+import { course, lesson, videos } from "./course";
 
 export default combineReducers({
   auth,
@@ -11,4 +11,6 @@ export default combineReducers({
   payment,
   currentInstructor,
   course,
+  videos,
+  lesson,
 });

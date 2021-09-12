@@ -13,6 +13,11 @@ import {
   UPDATE_COURSE_SUCCESS,
   UPDATE_COURSE_FAIL,
   CLEAR_SUCCESS,
+  CREATE_LESSON_SUCCESS,
+  CREATE_LESSON_FAIL,
+  SET_LOADING_LESSON,
+  UPLOAD_VIDEO_SUCCESS,
+  UPLOAD_VIDEO_FAIL,
 } from "../types/type";
 
 const initialState = {
@@ -96,6 +101,88 @@ export const course = (state = initialState, action) => {
         success: false,
       };
     }
+    default:
+      return {
+        ...state,
+      };
+  }
+};
+
+const initialLesson = {
+  lessons: null,
+  loading: null,
+  error: null,
+};
+
+export const lesson = (state = initialLesson, action) => {
+  const { payload, type } = action;
+
+  switch (type) {
+    case CREATE_LESSON_SUCCESS:
+      return {
+        ...state,
+        lessons: payload,
+        loading: false,
+      };
+
+    case CREATE_LESSON_FAIL:
+      return {
+        ...state,
+        error: payload,
+        loading: false,
+      };
+
+    case SET_LOADING_LESSON:
+      return {
+        ...state,
+        loading: true,
+      };
+    case LOG_OUT:
+      return {
+        ...state,
+        lessons: null,
+      };
+    default:
+      return {
+        ...state,
+      };
+  }
+};
+
+const initialVideo = {
+  video: null,
+  loading: null,
+  error: null,
+};
+
+export const videos = (state = initialVideo, action) => {
+  const { payload, type } = action;
+
+  switch (type) {
+    case UPLOAD_VIDEO_SUCCESS:
+      return {
+        ...state,
+        video: payload,
+        loading: false,
+      };
+
+    case UPLOAD_VIDEO_FAIL:
+      return {
+        ...state,
+        error: payload,
+        loading: false,
+      };
+
+    case SET_LOADING_LESSON:
+      return {
+        ...state,
+        loading: true,
+      };
+    case LOG_OUT:
+      return {
+        ...state,
+        video: null,
+      };
     default:
       return {
         ...state,
