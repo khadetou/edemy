@@ -190,7 +190,7 @@ export const setProgress = (progress) => (dispatch) => {
 };
 
 //DELETE VIDEO
-export const deleteVideo = (videoLinks) => async (dispatch) => {
+export const deleteVideo = (id, videoLinks) => async (dispatch) => {
   try {
     dispatch(loadingVideo());
     const config = {
@@ -200,7 +200,7 @@ export const deleteVideo = (videoLinks) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      "/api/course/lesson/delete-video",
+      `/api/course/lesson/delete-video/${id}`,
       videoLinks,
       config
     );

@@ -12,7 +12,6 @@ const AddLessonForm = ({
   progress,
   video,
 }) => {
-  console.log(progress);
   return (
     <div className="container pt-3">
       <form className="d-flex flex-column " onSubmit={handleAddLesson}>
@@ -41,7 +40,7 @@ const AddLessonForm = ({
             <input onChange={handleVideo} type="file" accept="video/*" hidden />
           </label>
 
-          {!videoLinkLoading && (
+          {!videoLinkLoading && video && (
             <Tooltip title="Remove">
               <span onClick={handleVideoRemove} className="pt-1 ps-3 ">
                 <CloseCircleFilled className="text-danger d-flex justify-content-center pt-4 pointer" />

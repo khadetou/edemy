@@ -169,6 +169,7 @@ const initialVideo = {
   video: null,
   loading: false,
   error: null,
+  message: null,
   progres: 0,
 };
 
@@ -199,7 +200,8 @@ export const videos = (state = initialVideo, action) => {
     case DELETE_VIDEO_SUCCESS: {
       return {
         ...state,
-        video: payload,
+        message: payload,
+        video: null,
         progres: 0,
         loading: false,
       };
@@ -215,6 +217,7 @@ export const videos = (state = initialVideo, action) => {
         ...state,
         progres: 0,
         video: null,
+        message: null,
       };
     case CLEAR_ERROR:
       return {

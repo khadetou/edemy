@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import InstructorProtectedRoute from "@/components/routes/InstructorProtectedRoute";
-import { Avatar, Tooltip, Button, Modal } from "antd";
+import { Avatar, Tooltip, Button, Modal, List } from "antd";
 import {
   EditOutlined,
   CheckOutlined,
@@ -21,6 +21,7 @@ import { toast } from "react-toastify";
 import { CLEAR_ERROR, CLEAR_SUCCESS } from "@/redux/types/type";
 import Link from "next/link";
 import AddLessonForm from "@/components/forms/AddLessonForm";
+import Item from "antd/lib/list/Item";
 
 export default function CourseView() {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ export default function CourseView() {
     error: videoLinkErr,
     loading: videoLinkLoading,
     progres,
+    message,
   } = useSelector((state) => state.videos);
 
   const {
@@ -62,6 +64,12 @@ export default function CourseView() {
       setProgress(progres);
     }
 
+    setVideo(videoLinks);
+
+    // if (message) {
+    //   setUploadButtonText("Upload Video");
+    //   dispatch({ type: CLEAR_SUCCESS });
+    // }
     if ((id && course && id !== course._id) || (!course && id)) {
       dispatch(getCourse(id));
     }
@@ -97,6 +105,8 @@ export default function CourseView() {
     lessons,
     lessonError,
     videoLinkErr,
+    videoLinks,
+    // message,
     progres,
   ]);
 
@@ -121,18 +131,21 @@ export default function CourseView() {
 
   const handleVideo = (e) => {
     const file = e.target.files[0];
-    setUploadButtonText("Upload Video");
-    let videoData = new FormData();
-    videoData.append("video", file);
 
-    dispatch(uploadVideo(course.instructor, videoData));
-    setUploadButtonText(file.name);
+    if (file) {
+      let videoData = new FormData();
+      videoData.append("video", file);
+
+      dispatch(uploadVideo(course.instructor, videoData));
+      setUploadButtonText(file.name);
+    }
   };
 
   const handleVideoRemove = () => {
     if (videoLinks) {
-      dispatch(deleteVideo(videoLinks));
+      dispatch(deleteVideo(course.instructor, videoLinks));
       setUploadButtonText("Upload Video");
+      setProgress(0);
     }
   };
 
@@ -228,6 +241,26 @@ export default function CourseView() {
                 handleVideoRemove={handleVideoRemove}
               />
             </Modal>
+
+            <div className="row pb-5">
+              <div className="col lesson-list">
+                <h4>
+                  {course && course.lessons && course.lessons.length} Lessons
+                </h4>
+                <List
+                  itemLayout="horizontal"
+                  dataSource={course && course.lessons}
+                  renderItem={(item, index) => (
+                    <Item>
+                      <Item.Meta
+                        avatar={<Avatar>{index + 1}</Avatar>}
+                        title={item.title}
+                      ></Item.Meta>
+                    </Item>
+                  )}
+                ></List>
+              </div>
+            </div>
           </div>
         )}
       </div>
