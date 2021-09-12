@@ -1,5 +1,5 @@
 import axios from "axios";
-import { loadingCreateCourse, loadingLesson } from "./loading";
+import { loadingCreateCourse, loadingLesson, loadingVideo } from "./loading";
 import {
   CREATECOURSE_SUCCESS,
   CREATECOURSE_FAIL,
@@ -15,6 +15,9 @@ import {
   CREATE_LESSON_FAIL,
   UPLOAD_VIDEO_SUCCESS,
   UPLOAD_VIDEO_FAIL,
+  SET_PROGRESS,
+  DELETE_VIDEO_SUCCESS,
+  DELETE_VIDEO_FAIL,
 } from "../types/type";
 
 //Create course
@@ -124,17 +127,16 @@ export const deleteCourse = (id) => async (dispatch) => {
 //Upload video
 export const uploadVideo = (id, videoData) => async (dispatch) => {
   try {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    dispatch(loadingLesson());
+    dispatch(loadingVideo());
 
     const { data } = await axios.post(
       `/api/course/lesson/upload-video/${id}`,
-      videoData
+      videoData,
+      {
+        onUploadProgress: (e) => {
+          dispatch(setProgress(Math.round((100 * e.loaded) / e.total)));
+        },
+      }
     );
 
     dispatch({
@@ -175,6 +177,42 @@ export const createLesson = (id, lessonData) => async (dispatch) => {
     console.log({ error });
     dispatch({
       type: CREATE_LESSON_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const setProgress = (progress) => (dispatch) => {
+  dispatch({
+    type: SET_PROGRESS,
+    payload: progress,
+  });
+};
+
+//DELETE VIDEO
+export const deleteVideo = (videoLinks) => async (dispatch) => {
+  try {
+    dispatch(loadingVideo());
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const { data } = await axios.post(
+      "/api/course/lesson/delete-video",
+      videoLinks,
+      config
+    );
+
+    dispatch({
+      type: DELETE_VIDEO_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    console.log({ error });
+    dispatch({
+      type: DELETE_VIDEO_FAIL,
       payload: error.response.data.message,
     });
   }

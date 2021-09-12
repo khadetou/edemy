@@ -15,6 +15,7 @@ import {
   deleteCourse,
   createLesson,
   uploadVideo,
+  deleteVideo,
 } from "@/redux/actions/course";
 import { toast } from "react-toastify";
 import { CLEAR_ERROR, CLEAR_SUCCESS } from "@/redux/types/type";
@@ -29,8 +30,15 @@ export default function CourseView() {
   const {
     video: videoLinks,
     error: videoLinkErr,
-    laoding: videoLinkLoading,
+    loading: videoLinkLoading,
+    progres,
   } = useSelector((state) => state.videos);
+
+  const {
+    lessons,
+    error: lessonError,
+    loading: lessonLoading,
+  } = useSelector((state) => state.lesson);
 
   const router = useRouter();
 
@@ -43,11 +51,17 @@ export default function CourseView() {
     content: "",
   });
 
-  const [video, setVideo] = useState({});
-  const [uploading, setUploading] = useState(false);
+  const [video, setVideo] = useState("");
+
   const [uploadButtonText, setUploadButtonText] = useState("Upload Video");
 
+  const [progress, setProgress] = useState(0);
+
   useEffect(() => {
+    if (progres) {
+      setProgress(progres);
+    }
+
     if ((id && course && id !== course._id) || (!course && id)) {
       dispatch(getCourse(id));
     }
@@ -60,38 +74,66 @@ export default function CourseView() {
       toast.error(videoLinkErr);
       dispatch({ type: CLEAR_ERROR });
     }
+    if (lessonError) {
+      toast.error(lessonError);
+      dispatch({ type: CLEAR_ERROR });
+    }
     if (success) {
       toast.success(success.message);
       dispatch({ type: CLEAR_SUCCESS });
       router.push("/courses/instructor");
     }
-  }, [error, dispatch, course, id, success]);
+    if (lessons) {
+      toast.success("Lesson created successfully!");
+      dispatch({ type: CLEAR_SUCCESS });
+      setVisible(false);
+    }
+  }, [
+    error,
+    dispatch,
+    course,
+    id,
+    success,
+    lessons,
+    lessonError,
+    videoLinkErr,
+    progres,
+  ]);
 
   // FUNCTIONS FOR ADD LESSON
   const handleAddLesson = (e) => {
     e.preventDefault();
-    if (!video) {
-      return toast.error("It's loading");
-    }
-    setVideo(videoLinks);
 
+    if (!videoLinkLoading) {
+      setVideo(videoLinks);
+    }
+
+    if (!video) {
+      return toast.error("Upload a video");
+    }
     const lessonData = {
       ...values,
       video,
     };
-    console.log(course._id);
+
     dispatch(createLesson(course._id, lessonData));
   };
 
   const handleVideo = (e) => {
     const file = e.target.files[0];
-
+    setUploadButtonText("Upload Video");
     let videoData = new FormData();
     videoData.append("video", file);
 
-    console.log(videoData);
     dispatch(uploadVideo(course.instructor, videoData));
     setUploadButtonText(file.name);
+  };
+
+  const handleVideoRemove = () => {
+    if (videoLinks) {
+      dispatch(deleteVideo(videoLinks));
+      setUploadButtonText("Upload Video");
+    }
   };
 
   const deleteC = (id) => {
@@ -176,11 +218,14 @@ export default function CourseView() {
             >
               <AddLessonForm
                 values={values}
+                video={video}
                 setValues={setValues}
                 handleAddLesson={handleAddLesson}
-                uploading={uploading}
+                videoLinkLoading={videoLinkLoading}
                 uploadButtonText={uploadButtonText}
                 handleVideo={handleVideo}
+                progress={progress}
+                handleVideoRemove={handleVideoRemove}
               />
             </Modal>
           </div>

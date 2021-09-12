@@ -5,6 +5,7 @@ import {
   SET_LOADING_USER,
   SET_LOADING_CREATECOURSE,
   SET_LOADING_LESSON,
+  SET_LOADING_VIDEO,
 } from "../types/type";
 
 export const loadingUser = () => (dispatch) => {

@@ -18,6 +18,10 @@ import {
   SET_LOADING_LESSON,
   UPLOAD_VIDEO_SUCCESS,
   UPLOAD_VIDEO_FAIL,
+  SET_LOADING_VIDEO,
+  SET_PROGRESS,
+  DELETE_VIDEO_SUCCESS,
+  DELETE_VIDEO_FAIL,
 } from "../types/type";
 
 const initialState = {
@@ -110,6 +114,7 @@ export const course = (state = initialState, action) => {
 
 const initialLesson = {
   lessons: null,
+  lesson: null,
   loading: null,
   error: null,
 };
@@ -137,6 +142,17 @@ export const lesson = (state = initialLesson, action) => {
         ...state,
         loading: true,
       };
+
+    case CLEAR_SUCCESS:
+      return {
+        ...state,
+        lessons: null,
+      };
+    case CLEAR_ERROR:
+      return {
+        ...state,
+        error: null,
+      };
     case LOG_OUT:
       return {
         ...state,
@@ -151,8 +167,9 @@ export const lesson = (state = initialLesson, action) => {
 
 const initialVideo = {
   video: null,
-  loading: null,
+  loading: false,
   error: null,
+  progres: 0,
 };
 
 export const videos = (state = initialVideo, action) => {
@@ -166,6 +183,7 @@ export const videos = (state = initialVideo, action) => {
         loading: false,
       };
 
+    case DELETE_VIDEO_FAIL:
     case UPLOAD_VIDEO_FAIL:
       return {
         ...state,
@@ -173,10 +191,35 @@ export const videos = (state = initialVideo, action) => {
         loading: false,
       };
 
-    case SET_LOADING_LESSON:
+    case SET_LOADING_VIDEO:
       return {
         ...state,
         loading: true,
+      };
+    case DELETE_VIDEO_SUCCESS: {
+      return {
+        ...state,
+        video: payload,
+        progres: 0,
+        loading: false,
+      };
+    }
+    case SET_PROGRESS:
+      return {
+        ...state,
+        progres: payload,
+      };
+
+    case CLEAR_SUCCESS:
+      return {
+        ...state,
+        progres: 0,
+        video: null,
+      };
+    case CLEAR_ERROR:
+      return {
+        ...state,
+        error: null,
       };
     case LOG_OUT:
       return {
