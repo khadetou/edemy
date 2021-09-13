@@ -14,7 +14,7 @@ export default function Login() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const { error, loading, isAuthenticated } = useSelector(
+  const { error, loading, isAuthenticated, user } = useSelector(
     (state) => state.auth
   );
 
@@ -29,15 +29,16 @@ export default function Login() {
     dispatch(login(body));
   };
 
+  let redirect = "/";
   useEffect(() => {
-    if (localStorage.token) {
-      router.push("/");
+    if (user) {
+      router.push(redirect);
     }
     if (error) {
       toast.error(error);
       dispatch({ type: CLEAR_ERROR });
     }
-  });
+  }, [user, redirect, error]);
 
   return (
     <>

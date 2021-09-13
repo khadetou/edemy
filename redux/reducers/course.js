@@ -22,6 +22,8 @@ import {
   SET_PROGRESS,
   DELETE_VIDEO_SUCCESS,
   DELETE_VIDEO_FAIL,
+  DELETE_LESSON_FAIL,
+  DELETE_LESSON_SUCCESS,
 } from "../types/type";
 
 const initialState = {
@@ -124,12 +126,14 @@ export const lesson = (state = initialLesson, action) => {
 
   switch (type) {
     case CREATE_LESSON_SUCCESS:
+    case DELETE_LESSON_SUCCESS:
       return {
         ...state,
         lessons: payload,
         loading: false,
       };
 
+    case DELETE_LESSON_FAIL:
     case CREATE_LESSON_FAIL:
       return {
         ...state,

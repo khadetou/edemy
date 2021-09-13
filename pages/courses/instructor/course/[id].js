@@ -66,10 +66,6 @@ export default function CourseView() {
 
     setVideo(videoLinks);
 
-    // if (message) {
-    //   setUploadButtonText("Upload Video");
-    //   dispatch({ type: CLEAR_SUCCESS });
-    // }
     if ((id && course && id !== course._id) || (!course && id)) {
       dispatch(getCourse(id));
     }
@@ -183,7 +179,9 @@ export default function CourseView() {
 
                   <div className="d-flex pt-4">
                     <Tooltip title="Edit">
-                      <Link href={`/courses/instructor/edit/${course._id}`}>
+                      <Link
+                        href={`/courses/instructor/edit/${course._id}?keyword=${course._id}`}
+                      >
                         <EditOutlined className="h5 pointer text-warning me-4 btn" />
                       </Link>
                     </Tooltip>

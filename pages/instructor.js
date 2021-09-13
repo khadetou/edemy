@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import Link from "next/link";
 import { Button } from "antd";
 import TopNav from "@/components/TopNav";
 import {
@@ -26,12 +26,13 @@ export default function Instructor() {
   const router = useRouter();
 
   const becomeInstructor = () => {
-    dispatch(createInstructor());
+    if (isAuthenticated) {
+      dispatch(createInstructor());
+    } else {
+      router.push("/login?redirect=instructor");
+    }
   };
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/register");
-    }
     if (error) {
       toast.error(error);
       dispatch({ type: CLEAR_ERROR });
@@ -40,18 +41,9 @@ export default function Instructor() {
       router.push(link);
     }
   }, [link, error, dispatch]);
-  console.log(link);
+
   return (
     <>
-      <TopNav
-        Navigation={
-          <Item icon={<CarryOutOutlined />} key="create/course">
-            <Link href="/courses/instructor">
-              <a>Instructor</a>
-            </Link>
-          </Item>
-        }
-      />
       <h1 className="p-5 mb-4 text-center bg-primary text-white bg font">
         Register As Instructor
       </h1>
@@ -92,3 +84,13 @@ export default function Instructor() {
     </>
   );
 }
+
+// export const getServerSideProps = async (req, res) => {
+//   console.log(req.headers);
+//   return {
+//     redirect: {
+//       destination: "/login?redirect=/instructor",
+//       permanent: false,
+//     },
+//   };
+// };

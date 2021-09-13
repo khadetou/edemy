@@ -18,6 +18,8 @@ import {
   SET_PROGRESS,
   DELETE_VIDEO_SUCCESS,
   DELETE_VIDEO_FAIL,
+  DELETE_LESSON_FAIL,
+  DELETE_LESSON_SUCCESS,
 } from "../types/type";
 
 //Create course
@@ -213,6 +215,24 @@ export const deleteVideo = (id, videoLinks) => async (dispatch) => {
     console.log({ error });
     dispatch({
       type: DELETE_VIDEO_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+//DELETE LESSON
+export const deleteLesson = (id, lessonId) => async (dispatch) => {
+  try {
+    dispatch(loadingCreateCourse());
+
+    const { data } = await axios.delete(`/api/course/lesson/${id}/${lessonId}`);
+    dispatch({
+      type: DELETE_LESSON_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: DELETE_LESSON_FAIL,
       payload: error.response.data.message,
     });
   }

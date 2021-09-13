@@ -1,20 +1,19 @@
-import { Select, Button, Avatar } from "antd";
+import { Select, Button, Avatar, List } from "antd";
 import { useState, useEffect } from "react";
 import InstructorProtectedRoute from "@/components/routes/InstructorProtectedRoute";
 import { useSelector, useDispatch } from "react-redux";
-import { getCourse, updateCourse } from "@/redux/actions/course";
+import { getCourse, updateCourse, deleteLesson } from "@/redux/actions/course";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { CLEAR_ERROR, CLEAR_SUCCESS } from "@/redux/types/type";
+import Item from "antd/lib/list/Item";
 
-export default function UpdateCourse() {
+export default function UpdateCourse({ props }) {
   const dispatch = useDispatch();
   const router = useRouter();
-  const id = router.query.id;
+  const { id } = router.query;
 
-  const { error, course, success, loading } = useSelector(
-    (state) => state.course
-  );
+  const { course, success, loading } = useSelector((state) => state.course);
 
   const { Option } = Select;
   // state
@@ -24,15 +23,11 @@ export default function UpdateCourse() {
     price: "",
     paid: "",
     category: "",
+    lessons: [],
   });
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
-      dispatch({ type: CLEAR_ERROR });
-    }
-
-    if ((!course && id) || (course && id !== course._id)) {
+    if (!course) {
       dispatch(getCourse(id));
     } else {
       setValues({
@@ -41,16 +36,19 @@ export default function UpdateCourse() {
         price: course.price,
         paid: course.paid,
         category: course.category,
+        lessons: course.lessons,
       });
+
       setImagePreview(course.image[0].url);
     }
+
     if (success) {
       toast.success("Data has been updated successfully!");
       dispatch(getCourse(id));
       dispatch({ type: CLEAR_SUCCESS });
       router.push("/courses/instructor");
     }
-  }, [course, id, dispatch, error, success]);
+  }, [course, id, dispatch, success, course]);
 
   const [imagePreview, setImagePreview] = useState([]);
   const [image, setImage] = useState([]);
@@ -205,7 +203,26 @@ export default function UpdateCourse() {
           </div>
         </form>
       </div>
-      <pre>{JSON.stringify(values, null, 4)}</pre>
+
+      <hr />
+
+      <div className="row pb-5">
+        <div className="col lesson-list">
+          <h4>{values && values.lessons && values.lessons.length} Lessons</h4>
+          <List
+            itemLayout="horizontal"
+            dataSource={values && values.lessons}
+            renderItem={(item, index) => (
+              <Item>
+                <Item.Meta
+                  avatar={<Avatar>{index + 1}</Avatar>}
+                  title={item.title}
+                ></Item.Meta>
+              </Item>
+            )}
+          ></List>
+        </div>
+      </div>
     </InstructorProtectedRoute>
   );
 }

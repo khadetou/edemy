@@ -38,7 +38,7 @@ export default function TopNav() {
         </Item>
       ) : (
         <Item icon={<TeamOutlined />} key="introctor">
-          <Link href="/courses/instructor">
+          <Link href="/instructor">
             <a>Become Instructor</a>
           </Link>
         </Item>

@@ -193,7 +193,6 @@ export default function CourseCreate() {
           </div>
         </form>
       </div>
-      <pre>{JSON.stringify(values, null, 4)}</pre>
     </InstructorProtectedRoute>
   );
 }
